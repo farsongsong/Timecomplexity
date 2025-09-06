@@ -1,7 +1,7 @@
 body {
   margin: 0;
   font-family: 'Noto Sans KR', sans-serif;
-  background: linear-gradient(135deg,#f8f9fa,#e9ecef);
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
 }
 
 .container {
@@ -64,7 +64,7 @@ button:hover {
 .bar {
   flex: 1;
   margin: 1px;
-  background: linear-gradient(to top, #007bff,#66b3ff);
+  background: linear-gradient(to top, #007bff, #66b3ff);
   border-radius: 4px 4px 0 0;
   position: relative;
   transition: height 0.2s, background-color 0.2s;
