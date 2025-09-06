@@ -1,29 +1,28 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>정렬 알고리즘 실시간 비교</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<meta charset="UTF-8">
+<title>정렬 알고리즘 실시간 비교</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <div class="container">
-    <h1>정렬 알고리즘 실시간 비교</h1>
+<div class="container">
+  <h1>정렬 알고리즘 실시간 비교</h1>
 
-    <div class="controls">
-      배열 크기: <input type="number" id="arraySize" value="30" min="5" max="200">
-      <button onclick="runAll()">실행</button>
-      <button onclick="generateArray()">새 배열</button>
-    </div>
-
-    <div id="status">현재 알고리즘: 없음</div>
-    <div id="arrayContainer"></div>
-
-    <h2>시간 대비 비교 횟수 그래프</h2>
-    <canvas id="chart" width="800" height="300"></canvas>
+  <div class="controls">
+    배열 크기: <input type="number" id="arraySize" value="30" min="5" max="200">
+    <button onclick="runAll()">실행</button>
+    <button onclick="generateArray()">새 배열</button>
   </div>
 
-  <script src="script.js"></script>
+  <div id="status">현재 알고리즘: 없음</div>
+  <div id="arrayContainer"></div>
+
+  <h2>시간 대비 비교 횟수 그래프</h2>
+  <canvas id="chart" width="800" height="300"></canvas>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
-
