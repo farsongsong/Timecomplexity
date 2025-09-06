@@ -1,7 +1,7 @@
 let originalArray = [];
 let array = [];
 let delay = 20;
-let chart;
+let charts = {};
 let cmpCount = 0;
 let startTime;
 
@@ -17,6 +17,7 @@ const algoNames=["버블","선택","삽입","퀵","병합"];
 const algoList=["bubble","selection","insertion","quick","merge"];
 let currentColor = "#007bff";
 
+// ---------------- 배열 ----------------
 function generateArray(){
   const size = parseInt(document.getElementById("arraySize").value);
   originalArray = Array.from({length:size},(_,i)=>i+1);
@@ -27,7 +28,7 @@ function generateArray(){
   array=originalArray.slice();
   drawArray();
   cmpCount=0;
-  initChart();
+  initCharts();
   document.getElementById("status").innerText="현재 알고리즘: 없음";
 }
 
@@ -50,34 +51,36 @@ function drawArray(highlight=[], finalColor=null){
   });
 }
 
-function initChart(){
-  const ctx=document.getElementById("chart").getContext("2d");
-  if(chart) chart.destroy();
-  chart=new Chart(ctx,{
-    type:"line",
-    data:{datasets:algoList.map((algo,i)=>({
-      label:algoNames[i],
-      data:[],
-      borderColor:algoColors[algo],
-      fill:false,
-      pointRadius:2,
-      tension:0.2
-    }))},
-    options:{
-      responsive:true,animation:false,
-      plugins:{legend:{display:true}},
-      scales:{
-        x:{type:"linear", title:{display:true,text:"시간(ms)"}},
-        y:{beginAtZero:true,title:{display:true,text:"비교 횟수"}}
+// ---------------- 차트 ----------------
+function initCharts(){
+  algoList.forEach((algo,i)=>{
+    const ctx = document.getElementById(`chart_${algo}`).getContext("2d");
+    charts[algo] = new Chart(ctx,{
+      type:"line",
+      data:{datasets:[{
+        label:algoNames[i],
+        data:[],
+        borderColor:algoColors[algo],
+        fill:false,
+        pointRadius:2,
+        tension:0.2
+      }]},
+      options:{
+        responsive:true, animation:false,
+        plugins:{legend:{display:true}},
+        scales:{
+          x:{type:"linear", title:{display:true,text:"시간(ms)"}},
+          y:{beginAtZero:true,title:{display:true,text:"비교 횟수"}}
+        }
       }
-    }
+    });
   });
 }
 
-function updateChart(algoIndex, cmp){
+function updateChart(algo, cmp){
   const now = performance.now()-startTime;
-  chart.data.datasets[algoIndex].data.push({x:now,y:cmp});
-  chart.update('none');
+  charts[algo].data.datasets[0].data.push({x:now,y:cmp});
+  charts[algo].update('none');
 }
 
 // ---------------- 정렬 ----------------
@@ -88,7 +91,7 @@ async function bubbleSort(a,algoIndex){
     for(let j=0;j<a.length-i-1;j++){
       cmpCount++;
       array=a.slice(); drawArray([j,j+1],currentColor);
-      updateChart(algoIndex,cmpCount);
+      updateChart("bubble",cmpCount);
       await new Promise(r=>setTimeout(r,delay));
       if(a[j]>a[j+1]) [a[j],a[j+1]]=[a[j+1],a[j]];
     }
@@ -105,7 +108,7 @@ async function selectionSort(a,algoIndex){
     for(let j=i+1;j<a.length;j++){
       cmpCount++;
       array=a.slice(); drawArray([min,j],currentColor);
-      updateChart(algoIndex,cmpCount);
+      updateChart("selection",cmpCount);
       await new Promise(r=>setTimeout(r,delay));
       if(a[j]<a[min]) min=j;
     }
@@ -124,7 +127,7 @@ async function insertionSort(a,algoIndex){
       cmpCount++;
       a[j+1]=a[j];
       array=a.slice(); drawArray([j,j+1],currentColor);
-      updateChart(algoIndex,cmpCount);
+      updateChart("insertion",cmpCount);
       await new Promise(r=>setTimeout(r,delay));
       j--;
     }
@@ -143,7 +146,7 @@ async function quickSort(a,algoIndex){
     for(let j=l;j<r;j++){
       cmpCount++;
       array=a.slice(); drawArray([i,j,r],currentColor);
-      updateChart(algoIndex,cmpCount);
+      updateChart("quick",cmpCount);
       await new Promise(r=>setTimeout(r,delay));
       if(a[j]<pivot) [a[i],a[j]]=[a[j],a[i]],i++;
     }
@@ -151,54 +154,4 @@ async function quickSort(a,algoIndex){
     await qs(l,i-1); await qs(i+1,r);
   }
   await qs(0,a.length-1);
-  array=a.slice(); drawArray([],currentColor);
-  document.getElementById("status").innerText=`퀵 정렬 완료 | 비교:${cmpCount} | 시간:${(performance.now()-startTime).toFixed(2)}ms`;
-}
-
-async function mergeSort(a,algoIndex){
-  a=a.slice(); cmpCount=0; startTime=performance.now();
-  currentColor=algoColors["merge"];
-  async function ms(l,r){
-    if(r-l<=1) return a.slice(l,r);
-    const m=Math.floor((l+r)/2);
-    const left=await ms(l,m);
-    const right=await ms(m,r);
-    let merged=[],i=0,j=0;
-    while(i<left.length && j<right.length){
-      cmpCount++;
-      if(left[i]<right[j]) merged.push(left[i++]);
-      else merged.push(right[j++]);
-      array=a.slice(); drawArray([],currentColor);
-      updateChart(algoIndex,cmpCount);
-      await new Promise(r=>setTimeout(r,delay));
-    }
-    merged=merged.concat(left.slice(i)).concat(right.slice(j));
-    for(let k=l;k<r;k++) a[k]=merged[k-l];
-    return merged;
-  }
-  await ms(0,a.length);
-  array=a.slice(); drawArray([],currentColor);
-  document.getElementById("status").innerText=`병합 정렬 완료 | 비교:${cmpCount} | 시간:${(performance.now()-startTime).toFixed(2)}ms`;
-}
-
-// ---------------- 순차 실행 ----------------
-async function runAll(){
-  generateArray();
-  for(let i=0;i<algoList.length;i++){
-    array=originalArray.slice();
-    document.getElementById("status").innerText=`현재 알고리즘: ${algoNames[i]} 정렬`;
-    if(algoList[i]==="bubble") await bubbleSort(array,i);
-    if(algoList[i]==="selection") await selectionSort(array,i);
-    if(algoList[i]==="insertion") await insertionSort(array,i);
-    if(algoList[i]==="quick") await quickSort(array,i);
-    if(algoList[i]==="merge") await mergeSort(array,i);
-    await new Promise(r=>setTimeout(r,500));
-  }
-}
-
-// 전역 등록
-window.runAll = runAll;
-window.generateArray = generateArray;
-
-// 초기 배열 생성
-window.onload = generateArray;
+  array=a
