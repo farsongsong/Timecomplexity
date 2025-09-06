@@ -2,13 +2,13 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>정렬 알고리즘 시각화</title>
+  <title>정렬 알고리즘 실시간 시각화</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <body>
   <div class="container">
-    <h1>정렬 알고리즘 시각화</h1>
+    <h1>정렬 알고리즘 실시간 시각화</h1>
 
     <div class="controls">
       <select id="algoSelect">
@@ -25,6 +25,9 @@
 
     <div id="status">현재 알고리즘: 없음</div>
     <div id="arrayContainer"></div>
+
+    <h2>비교 횟수 실시간 그래프</h2>
+    <canvas id="chart" width="600" height="250"></canvas>
   </div>
 
   <script src="script.js"></script>
