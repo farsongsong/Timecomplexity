@@ -1,44 +1,81 @@
 body {
-  margin:0;
+  margin: 0;
   font-family: 'Noto Sans KR', sans-serif;
   background: linear-gradient(135deg,#f8f9fa,#e9ecef);
 }
 
 .container {
-  max-width:900px;
-  margin:20px auto;
-  padding:15px;
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 15px;
 }
 
-h1,h2{text-align:center;color:#333;}
-
-.controls{text-align:center;margin-bottom:15px;}
-input[type=number],button{
-  padding:8px 12px;margin:0 5px;border-radius:6px;border:1px solid #ccc;font-size:14px;
-}
-button{
-  background-color:#007bff;color:#fff;cursor:pointer;border:none;transition:0.3s;
-}
-button:hover{background-color:#0056b3;}
-
-#status{text-align:center;font-size:18px;margin-bottom:10px;font-weight:bold;color:#444;}
-
-#arrayContainer{
-  display:flex;align-items:flex-end;height:300px;
-  border-radius:10px;background:#fff;padding:5px;
-  box-shadow:0 3px 10px rgba(0,0,0,0.1);
-  overflow:hidden;margin-bottom:20px;position:relative;
+h1, h2 {
+  text-align: center;
+  color: #333;
 }
 
-.bar{
-  flex:1;margin:1px;
-  background:linear-gradient(to top,#007bff,#66b3ff);
-  border-radius:4px 4px 0 0;
-  position:relative;transition:height 0.2s, background-color 0.2s;
+.controls {
+  text-align: center;
+  margin-bottom: 15px;
 }
 
-.bar span{
-  position:absolute;bottom:100%;left:50%;
-  transform:translateX(-50%);
-  font-size:11px;color:#222;font-weight:bold;
+input[type=number], button {
+  padding: 8px 12px;
+  margin: 0 5px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+button {
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  border: none;
+  transition: 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+#status {
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #444;
+}
+
+#arrayContainer {
+  display: flex;
+  align-items: flex-end;
+  height: 300px;
+  border-radius: 10px;
+  background: #fff;
+  padding: 5px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.bar {
+  flex: 1;
+  margin: 1px;
+  background: linear-gradient(to top, #007bff,#66b3ff);
+  border-radius: 4px 4px 0 0;
+  position: relative;
+  transition: height 0.2s, background-color 0.2s;
+}
+
+.bar span {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  color: #222;
+  font-weight: bold;
 }
