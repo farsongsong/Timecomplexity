@@ -20,7 +20,7 @@ h1, h2 {
   margin-bottom: 15px;
 }
 
-select, input[type=number], button {
+input[type=number], button {
   padding: 8px 12px;
   margin: 0 5px;
   border-radius: 6px;
