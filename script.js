@@ -208,6 +208,7 @@ document.addEventListener("DOMContentLoaded", () => {
     await mergeSort(array);
   }
 
+  // ---------------- 버튼 이벤트 ----------------
   startBtn.addEventListener("click", runAll);
   newBtn.addEventListener("click", generateArray);
 
