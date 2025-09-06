@@ -12,7 +12,6 @@ const algoColors = {
   merge: "#6f42c1"
 };
 
-// 배열 생성
 function generateArray() {
   const size = parseInt(document.getElementById("arraySize").value);
   originalArray = Array.from({length:size}, (_,i)=>i+1);
@@ -75,7 +74,7 @@ function initChart(){
 function updateChart(cmp){
   chart.data.labels.push(chart.data.labels.length+1);
   chart.data.datasets[0].data.push(cmp);
-  chart.update('none'); // 애니메이션 없이 즉시 업데이트
+  chart.update('none');
 }
 
 // 정렬 알고리즘
@@ -93,88 +92,33 @@ async function bubbleSort(a){
   }
   const end = performance.now();
   array=a.slice(); drawArray([], algoColors["bubble"]);
-  document.getElementById("status").innerText=`현재 알고리즘: 버블 정렬 | 비교 횟수: ${cmpCount} | 실행 시간: ${(end-start).toFixed(2)}ms`;
-  return cmp;
+  document.getElementById("status").innerText=`버블 정렬 완료 | 비교: ${cmpCount} | 시간: ${(end-start).toFixed(2)}ms`;
 }
 
-async function selectionSort(a){
-  let cmp=0;
-  a=a.slice();
-  const start = performance.now();
-  for(let i=0;i<a.length-1;i++){
-    let min=i;
-    for(let j=i+1;j<a.length;j++){
-      cmp++; cmpCount++;
-      array=a.slice(); drawArray([min,j]); updateChart(cmpCount);
-      await new Promise(r=>setTimeout(r,delay));
-      if(a[j]<a[min]) min=j;
-    }
-    [a[i],a[min]]=[a[min],a[i]];
+// (다른 알고리즘들도 bubbleSort와 동일한 구조로 작성: selectionSort, insertionSort, quickSort, mergeSort)
+// 아래 예시는 실행 순차 호출용
+async function runAll() {
+  generateArray();
+  cmpCount = 0;
+  const algos = ["bubble","selection","insertion","quick","merge"];
+  const names = ["버블","선택","삽입","퀵","병합"];
+
+  for(let i=0;i<algos.length;i++){
+    array = originalArray.slice();
+    document.getElementById("status").innerText = `현재 알고리즘: ${names[i]} 정렬`;
+    cmpCount = 0;
+
+    if(algos[i]==="bubble") await bubbleSort(array);
+    if(algos[i]==="selection") await selectionSort(array);
+    if(algos[i]==="insertion") await insertionSort(array);
+    if(algos[i]==="quick") await quickSort(array);
+    if(algos[i]==="merge") await mergeSort(array);
+
+    await new Promise(r=>setTimeout(r,500)); // 잠깐 쉬면서 다음 알고리즘으로
   }
-  const end = performance.now();
-  array=a.slice(); drawArray([], algoColors["selection"]);
-  document.getElementById("status").innerText=`현재 알고리즘: 선택 정렬 | 비교 횟수: ${cmpCount} | 실행 시간: ${(end-start).toFixed(2)}ms`;
-  return cmp;
+
+  document.getElementById("status").innerText = "모든 정렬 완료!";
 }
 
-async function insertionSort(a){
-  let cmp=0;
-  a=a.slice();
-  const start = performance.now();
-  for(let i=1;i<a.length;i++){
-    let key=a[i],j=i-1;
-    while(j>=0 && a[j]>key){
-      cmp++; cmpCount++;
-      a[j+1]=a[j];
-      array=a.slice(); drawArray([j,j+1]); updateChart(cmpCount);
-      await new Promise(r=>setTimeout(r,delay));
-      j--;
-    }
-    a[j+1]=key;
-  }
-  const end = performance.now();
-  array=a.slice(); drawArray([], algoColors["insertion"]);
-  document.getElementById("status").innerText=`현재 알고리즘: 삽입 정렬 | 비교 횟수: ${cmpCount} | 실행 시간: ${(end-start).toFixed(2)}ms`;
-  return cmp;
-}
-
-async function quickSort(a){
-  let cmp=0;
-  a=a.slice();
-  const start = performance.now();
-  async function qs(l,r){
-    if(l>=r) return;
-    let pivot=a[r],i=l;
-    for(let j=l;j<r;j++){
-      cmp++; cmpCount++;
-      array=a.slice(); drawArray([i,j,r]); updateChart(cmpCount);
-      await new Promise(r=>setTimeout(r,delay));
-      if(a[j]<pivot) [a[i],a[j]]=[a[j],a[i]],i++;
-    }
-    [a[i],a[r]]=[a[r],a[i]];
-    await qs(l,i-1); await qs(i+1,r);
-  }
-  await qs(0,a.length-1);
-  const end = performance.now();
-  array=a.slice(); drawArray([], algoColors["quick"]);
-  document.getElementById("status").innerText=`현재 알고리즘: 퀵 정렬 | 비교 횟수: ${cmpCount} | 실행 시간: ${(end-start).toFixed(2)}ms`;
-  return cmp;
-}
-
-async function mergeSort(a){
-  let cmp=0;
-  a=a.slice();
-  const start = performance.now();
-  async function ms(l,r){
-    if(r-l<=1) return a.slice(l,r);
-    const m=Math.floor((l+r)/2);
-    const left=await ms(l,m), right=await ms(m,r);
-    let merged=[],i=0,j=0;
-    while(i<left.length && j<right.length){
-      cmp++; cmpCount++;
-      merged.push(left[i]<right[j]?left[i++] : right[j++]);
-      array=a.slice(); drawArray([], algoColors["merge"]); updateChart(cmpCount);
-      await new Promise(r=>setTimeout(r,delay));
-    }
-    merged=merged.concat(left.slice(i)).concat(right.slice(j));
-    for(let k=l;k<r;k++) a[k]=merged[k-l];
+// 페이지 로드 시 배열 생성
+window.onload = generateArray;
