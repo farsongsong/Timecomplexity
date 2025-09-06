@@ -19,8 +19,14 @@
   <div id="status">현재 알고리즘: 없음</div>
   <div id="arrayContainer"></div>
 
-  <h2>시간 대비 비교 횟수 그래프</h2>
-  <canvas id="chart" width="800" height="300"></canvas>
+  <h2>알고리즘별 실시간 비교 횟수 그래프</h2>
+  <div class="charts">
+    <canvas id="chart_bubble" width="400" height="200"></canvas>
+    <canvas id="chart_selection" width="400" height="200"></canvas>
+    <canvas id="chart_insertion" width="400" height="200"></canvas>
+    <canvas id="chart_quick" width="400" height="200"></canvas>
+    <canvas id="chart_merge" width="400" height="200"></canvas>
+  </div>
 </div>
 
 <script src="script.js"></script>
