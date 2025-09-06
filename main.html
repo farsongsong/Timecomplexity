@@ -30,7 +30,7 @@
 <script>
 let originalArray = [];
 let array = [];
-let delay = 20; // 애니메이션 속도(ms)
+let delay = 20;
 let compareCounts = [];
 let times = [];
 
@@ -38,7 +38,6 @@ function generateArray(){
     const size = parseInt(document.getElementById('arraySize').value);
     originalArray = [];
     for(let i=1;i<=size;i++) originalArray.push(i);
-    // 무작위 섞기
     for(let i=size-1;i>0;i--){
         const j=Math.floor(Math.random()*(i+1));
         [originalArray[i],originalArray[j]]=[originalArray[j],originalArray[i]];
@@ -47,7 +46,6 @@ function generateArray(){
     drawArray();
 }
 
-// 배열 시각화
 function drawArray(highlight=[]){
     const container=document.getElementById('arrayContainer');
     container.innerHTML='';
@@ -60,7 +58,6 @@ function drawArray(highlight=[]){
     });
 }
 
-// 정렬 알고리즘 (비교/교환 애니메이션 포함)
 async function bubbleSort(arr){
     let cmp=0;
     let a=arr.slice();
@@ -187,7 +184,6 @@ async function mergeSort(arr){
     return cmp;
 }
 
-// 모든 알고리즘 실행 후 그래프 표시
 async function runAll(){
     generateArray();
     compareCounts=[]; times=[];
@@ -222,4 +218,3 @@ window.onload=generateArray;
 
 </body>
 </html>
-
