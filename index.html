@@ -2,9 +2,8 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>정렬 알고리즘 비교</title>
+  <title>정렬 알고리즘 시뮬레이터</title>
   <link rel="stylesheet" href="style.css">
-  <!-- Chart.js 불러오기 -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <body>
@@ -13,7 +12,10 @@
   <div id="controls">
     <button onclick="runAll()">시작</button>
     <button onclick="generateArray()">새 배열 생성</button>
+    <input type="number" id="arraySize" value="30" min="5" max="200"> 개
   </div>
+
+  <div id="status">현재 알고리즘: 없음</div>
 
   <div id="arrayContainer"></div>
 
