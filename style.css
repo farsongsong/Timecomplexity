@@ -42,3 +42,9 @@ button:hover{background-color:#0056b3;}
   transform:translateX(-50%);
   font-size:11px;color:#222;font-weight:bold;
 }
+
+.charts{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
