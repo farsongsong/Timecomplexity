@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>정렬 알고리즘 시뮬레이터</title>
+  <title>정렬 알고리즘 시각화</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
@@ -19,16 +19,12 @@
         <option value="merge">병합 정렬</option>
       </select>
       <button onclick="runSelected()">실행</button>
-      <button onclick="compareAll()">성능 비교</button>
       <button onclick="generateArray()">새 배열</button>
       <input type="number" id="arraySize" value="30" min="5" max="200">
     </div>
 
     <div id="status">현재 알고리즘: 없음</div>
     <div id="arrayContainer"></div>
-
-    <h2>알고리즘 성능 비교</h2>
-    <canvas id="chart" width="600" height="300"></canvas>
   </div>
 
   <script src="script.js"></script>
