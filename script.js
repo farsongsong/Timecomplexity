@@ -201,4 +201,7 @@ async function runAll(){
   await mergeSort(array);
 }
 
+// ---------------- 이벤트 ----------------
+document.getElementById("startBtn").addEventListener("click", runAll);
+document.getElementById("newBtn").addEventListener("click", generateArray);
 window.onload=generateArray;
