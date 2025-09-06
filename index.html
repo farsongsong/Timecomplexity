@@ -2,22 +2,22 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>정렬 알고리즘 시각화</title>
+  <title>정렬 알고리즘 비교</title>
   <link rel="stylesheet" href="style.css">
-  <!-- Chart.js 최신 버전 -->
+  <!-- Chart.js 불러오기 -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <body>
-
-  <h2>정렬 알고리즘 시각화</h2>
+  <h2>정렬 알고리즘 시뮬레이터</h2>
 
   <div id="controls">
-    배열 크기: <input type="number" id="arraySize" value="50" min="5" max="200">
     <button onclick="runAll()">시작</button>
-    <button onclick="generateArray()">다시 생성</button>
+    <button onclick="generateArray()">새 배열 생성</button>
   </div>
 
   <div id="arrayContainer"></div>
+
+  <h3>알고리즘 성능 비교</h3>
   <canvas id="chart" width="600" height="300"></canvas>
 
   <script src="script.js"></script>
