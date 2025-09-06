@@ -84,9 +84,10 @@ function updateChart(algo, cmp){
 }
 
 // ---------------- 정렬 ----------------
-async function bubbleSort(a,algoIndex){
+async function bubbleSort(a){
   a=a.slice(); cmpCount=0; startTime=performance.now();
   currentColor=algoColors["bubble"];
+  document.getElementById("status").innerText="버블 정렬 실행 중...";
   for(let i=0;i<a.length-1;i++){
     for(let j=0;j<a.length-i-1;j++){
       cmpCount++;
@@ -100,9 +101,10 @@ async function bubbleSort(a,algoIndex){
   document.getElementById("status").innerText=`버블 정렬 완료 | 비교:${cmpCount} | 시간:${(performance.now()-startTime).toFixed(2)}ms`;
 }
 
-async function selectionSort(a,algoIndex){
+async function selectionSort(a){
   a=a.slice(); cmpCount=0; startTime=performance.now();
   currentColor=algoColors["selection"];
+  document.getElementById("status").innerText="선택 정렬 실행 중...";
   for(let i=0;i<a.length-1;i++){
     let min=i;
     for(let j=i+1;j<a.length;j++){
@@ -118,9 +120,10 @@ async function selectionSort(a,algoIndex){
   document.getElementById("status").innerText=`선택 정렬 완료 | 비교:${cmpCount} | 시간:${(performance.now()-startTime).toFixed(2)}ms`;
 }
 
-async function insertionSort(a,algoIndex){
+async function insertionSort(a){
   a=a.slice(); cmpCount=0; startTime=performance.now();
   currentColor=algoColors["insertion"];
+  document.getElementById("status").innerText="삽입 정렬 실행 중...";
   for(let i=1;i<a.length;i++){
     let key=a[i], j=i-1;
     while(j>=0 && a[j]>key){
@@ -137,12 +140,13 @@ async function insertionSort(a,algoIndex){
   document.getElementById("status").innerText=`삽입 정렬 완료 | 비교:${cmpCount} | 시간:${(performance.now()-startTime).toFixed(2)}ms`;
 }
 
-async function quickSort(a,algoIndex){
+async function quickSort(a){
   a=a.slice(); cmpCount=0; startTime=performance.now();
   currentColor=algoColors["quick"];
+  document.getElementById("status").innerText="퀵 정렬 실행 중...";
   async function qs(l,r){
     if(l>=r) return;
-    let pivot=a[r],i=l;
+    let pivot=a[r], i=l;
     for(let j=l;j<r;j++){
       cmpCount++;
       array=a.slice(); drawArray([i,j,r],currentColor);
@@ -151,7 +155,50 @@ async function quickSort(a,algoIndex){
       if(a[j]<pivot) [a[i],a[j]]=[a[j],a[i]],i++;
     }
     [a[i],a[r]]=[a[r],a[i]];
-    await qs(l,i-1); await qs(i+1,r);
+    await qs(l,i-1); 
+    await qs(i+1,r);
   }
   await qs(0,a.length-1);
-  array=a
+  array=a.slice(); drawArray([],currentColor);
+  document.getElementById("status").innerText=`퀵 정렬 완료 | 비교:${cmpCount} | 시간:${(performance.now()-startTime).toFixed(2)}ms`;
+}
+
+async function mergeSort(a){
+  a=a.slice(); cmpCount=0; startTime=performance.now();
+  currentColor=algoColors["merge"];
+  document.getElementById("status").innerText="병합 정렬 실행 중...";
+  async function ms(l,r){
+    if(r-l<=1) return a.slice(l,r);
+    const m=Math.floor((l+r)/2);
+    const left=await ms(l,m);
+    const right=await ms(m,r);
+    let merged=[],i=0,j=0;
+    while(i<left.length && j<right.length){
+      cmpCount++;
+      if(left[i]<right[j]) merged.push(left[i++]);
+      else merged.push(right[j++]);
+      for(let k=l;k<r;k++) a[k]=(merged[k-l]||0);
+      array=a.slice(); drawArray([],currentColor);
+      updateChart("merge",cmpCount);
+      await new Promise(r=>setTimeout(r,delay));
+    }
+    merged=merged.concat(left.slice(i)).concat(right.slice(j));
+    for(let k=l;k<r;k++) a[k]=merged[k-l];
+    return merged;
+  }
+  await ms(0,a.length);
+  array=a.slice(); drawArray([],currentColor);
+  document.getElementById("status").innerText=`병합 정렬 완료 | 비교:${cmpCount} | 시간:${(performance.now()-startTime).toFixed(2)}ms`;
+}
+
+// ---------------- 순차 실행 ----------------
+async function runAll(){
+  generateArray();
+  await bubbleSort(array);
+  await selectionSort(array);
+  await insertionSort(array);
+  await quickSort(array);
+  await mergeSort(array);
+}
+
+window.onload=generateArray;
