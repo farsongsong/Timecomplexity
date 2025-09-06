@@ -1,4 +1,4 @@
- let originalArray = [];
+let originalArray = [];
 let array = [];
 let delay = 20;
 let chart;
@@ -16,7 +16,7 @@ const algoColors = {
 const algoNames = ["버블", "선택", "삽입", "퀵", "병합"];
 const algoList = ["bubble","selection","insertion","quick","merge"];
 
-// 배열 생성
+// ----------------- 배열 생성 -----------------
 function generateArray() {
   const size = parseInt(document.getElementById("arraySize").value);
   originalArray = Array.from({length:size}, (_,i)=>i+1);
@@ -26,12 +26,11 @@ function generateArray() {
   }
   array = originalArray.slice();
   drawArray();
-  cmpCount = 0;
   initChart();
   document.getElementById("status").innerText = "현재 알고리즘: 없음";
 }
 
-// 막대 그리기
+// ----------------- 막대 그리기 -----------------
 function drawArray(highlight=[], finalColor=null, algoColor=null) {
   const container = document.getElementById("arrayContainer");
   container.innerHTML = "";
@@ -39,7 +38,6 @@ function drawArray(highlight=[], finalColor=null, algoColor=null) {
     const bar = document.createElement("div");
     bar.className="bar";
     bar.style.height=`${value*2}px`;
-
     if(highlight.includes(index)) bar.style.backgroundColor="#dc3545";
     else if(finalColor) bar.style.backgroundColor = finalColor;
     else if(algoColor) bar.style.backgroundColor = algoColor;
@@ -53,8 +51,7 @@ function drawArray(highlight=[], finalColor=null, algoColor=null) {
   });
 }
 
-// ------------------- 그래프 -------------------
-
+// ----------------- 그래프 초기화 -----------------
 function initChart(){
   const ctx = document.getElementById("chart").getContext("2d");
   if(chart) chart.destroy();
@@ -82,27 +79,28 @@ function initChart(){
   });
 }
 
-function updateChart(algoIndex, cmp){
+// ----------------- 그래프 업데이트 -----------------
+function updateChart(algoIndex){
   const now = performance.now();
-  chart.data.datasets[algoIndex].data.push({x: now-startTime, y: cmp});
+  chart.data.datasets[algoIndex].data.push({x: now-startTime, y: cmpCount});
   chart.update('none');
 }
 
-// ------------------- 정렬 알고리즘 -------------------
-
+// ----------------- 정렬 알고리즘 -----------------
 async function bubbleSort(a, algoIndex){
   a=a.slice(); cmpCount=0; startTime=performance.now();
   for(let i=0;i<a.length-1;i++){
     for(let j=0;j<a.length-i-1;j++){
       cmpCount++;
-      array=a.slice(); drawArray([j,j+1], null, algoColors["bubble"]);
-      updateChart(algoIndex, cmpCount);
+      array=a.slice();
+      drawArray([j,j+1], null, algoColors["bubble"]);
+      updateChart(algoIndex);
       await new Promise(r=>setTimeout(r,delay));
       if(a[j]>a[j+1]) [a[j],a[j+1]]=[a[j+1],a[j]];
     }
   }
   array=a.slice(); drawArray([], algoColors["bubble"]);
-  document.getElementById("status").innerText=`버블 정렬 완료 | 비교: ${cmpCount} | 시간: ${(performance.now()-startTime).toFixed(2)}ms`;
+  document.getElementById("status").innerText=`버블 정렬 완료 | 비교: ${cmpCount}`;
 }
 
 async function selectionSort(a, algoIndex){
@@ -111,15 +109,16 @@ async function selectionSort(a, algoIndex){
     let min=i;
     for(let j=i+1;j<a.length;j++){
       cmpCount++;
-      array=a.slice(); drawArray([min,j], null, algoColors["selection"]);
-      updateChart(algoIndex, cmpCount);
+      array=a.slice();
+      drawArray([min,j], null, algoColors["selection"]);
+      updateChart(algoIndex);
       await new Promise(r=>setTimeout(r,delay));
       if(a[j]<a[min]) min=j;
     }
     [a[i],a[min]]=[a[min],a[i]];
   }
   array=a.slice(); drawArray([], algoColors["selection"]);
-  document.getElementById("status").innerText=`선택 정렬 완료 | 비교: ${cmpCount} | 시간: ${(performance.now()-startTime).toFixed(2)}ms`;
+  document.getElementById("status").innerText=`선택 정렬 완료 | 비교: ${cmpCount}`;
 }
 
 async function insertionSort(a, algoIndex){
@@ -129,17 +128,19 @@ async function insertionSort(a, algoIndex){
     while(j>=0 && a[j]>key){
       cmpCount++;
       a[j+1]=a[j];
-      array=a.slice(); drawArray([j,j+1], null, algoColors["insertion"]);
-      updateChart(algoIndex, cmpCount);
+      array=a.slice();
+      drawArray([j,j+1], null, algoColors["insertion"]);
+      updateChart(algoIndex);
       await new Promise(r=>setTimeout(r,delay));
       j--;
     }
     a[j+1]=key;
   }
   array=a.slice(); drawArray([], algoColors["insertion"]);
-  document.getElementById("status").innerText=`삽입 정렬 완료 | 비교: ${cmpCount} | 시간: ${(performance.now()-startTime).toFixed(2)}ms`;
+  document.getElementById("status").innerText=`삽입 정렬 완료 | 비교: ${cmpCount}`;
 }
 
+// ----------------- 퀵 정렬 -----------------
 async function quickSort(a, algoIndex){
   a=a.slice(); cmpCount=0; startTime=performance.now();
   async function qs(l,r){
@@ -147,7 +148,12 @@ async function quickSort(a, algoIndex){
     let pivot=a[r], i=l;
     for(let j=l;j<r;j++){
       cmpCount++;
-      array=a.slice(); drawArray([i,j,r], null, algoColors["quick"]);
-      updateChart(algoIndex, cmpCount);
+      array=a.slice();
+      drawArray([i,j,r], null, algoColors["quick"]);
+      updateChart(algoIndex);
       await new Promise(r=>setTimeout(r,delay));
-      if(a[j]<pivot) [a[i],a[j]]=[
+      if(a[j]<pivot) [a[i],a[j]]=[a[j],a[i]], i++;
+    }
+    [a[i],a[r]]=[a[r],a[i]];
+    await qs(l,i-1);
+    await qs
