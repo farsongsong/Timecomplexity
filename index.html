@@ -12,20 +12,20 @@
 
   <div class="controls">
     배열 크기: <input type="number" id="arraySize" value="30" min="5" max="200">
-    <button id="startBtn">실행</button>
-    <button id="newBtn">새 배열</button>
+    <button onclick="runAll()">실행</button>
+    <button onclick="generateArray()">새 배열</button>
   </div>
 
   <div id="status">현재 알고리즘: 없음</div>
   <div id="arrayContainer"></div>
 
-  <h2>알고리즘별 실시간 비교 횟수 그래프</h2>
+  <h2>비교 횟수 그래프 (실시간)</h2>
   <div class="charts">
-    <canvas id="chart_bubble" width="400" height="200"></canvas>
-    <canvas id="chart_selection" width="400" height="200"></canvas>
-    <canvas id="chart_insertion" width="400" height="200"></canvas>
-    <canvas id="chart_quick" width="400" height="200"></canvas>
-    <canvas id="chart_merge" width="400" height="200"></canvas>
+    <canvas id="chart-bubble"></canvas>
+    <canvas id="chart-selection"></canvas>
+    <canvas id="chart-insertion"></canvas>
+    <canvas id="chart-quick"></canvas>
+    <canvas id="chart-merge"></canvas>
   </div>
 </div>
 
