@@ -302,7 +302,7 @@ async function runAll() {
             await sleep(500);
         }
         $id("status").innerText = "모든 정렬 완료!";
-        drawArray([], 'linear-gradient(to top, #007bff,#66b3ff)'); // 기본 색상으로 되돌리기
+        drawArray([], 'linear-gradient(to top, #007bff,#66b3ff)'); 
     } catch (err) {
         console.error(err);
         $id("status").innerText = "오류 발생 — 콘솔 확인";
